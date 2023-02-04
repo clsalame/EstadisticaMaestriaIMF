@@ -28,7 +28,6 @@ descr(heart2)
 summary(heart2) 
 dim(heart2)
 
-
 #Tablas
 #Tabla de sexos
 Tablasexo=table(heart2$Sex)
@@ -44,12 +43,10 @@ kable(Tablaecvsexo, caption = "Tabla 2. Cantidad de ECV hombres y mujeres",
       col.names = c("No padece","Si padece"))
 
 #Histograma de edades
-
 hist(heart2$Age,col="yellow", xlab="Edad", ylab="Frecuencia", main="Histograma de edades")
 heartedadecv=filter(heart2, heart2$HeartDisease>0)
 heartedadecv
 hist(heartedadecv$Age,col="orange", xlab="Edad", ylab="Frecuencia", main="Histograma de edades de pacientes con ECV", ylim =c(0,100))
-
 
 #Tabla de medias
 Mediaritmo=tapply(heart2$MaxHR, heart2$HeartDisease, mean)
@@ -68,11 +65,9 @@ kable(mediaPS, caption = "Tabla 5. Media de presión sanguínea de pacientes vs. s
       align = 'c', digits = round(2),
       col.names = c("Media de Presión sanguínea"))
 
-
 #Gráfica de cajas de Colesterol
 boxplot(formula = heart2$Cholesterol ~ heart2$HeartDisease,xlab="Padece enfermedad", ylab="Nivel de colesterol",main="Gráfica de cajas", col=c("light yellow","light blue"))
 abline(h = 239, col = "red", lwd = 1)   
-
 
 #Realción con azúcar elevada y padecimiento de enfermedad
 mediaAzucar=tapply(heart2$FastingBS, heart2$HeartDisease, sum)
@@ -119,7 +114,6 @@ rcorr(as.matrix(nume))
 corPlot(nume, cex = 1.2, main = "Matriz de correlación")
 corrplot(cor(nume), type="upper", main="Correlación círculo")
 
-
 #Regresión de variables con mayor correlación
 #Correlación entre Enfermedad y Oldpeak
 regresion1 <- lm(heart2$HeartDisease ~ heart2$Oldpeak, data = heart2)
@@ -130,25 +124,27 @@ plot(heart2$HeartDisease, heart2$Oldpeak, xlab='Heart Disease', ylab='Oldpeak',m
 regresion2 <- lm(heart2$MaxHR ~ heart2$Age, data = heart2)
 summary(regresion1)
 plot(heart2$Age, heart2$MaxHR, xlab='Edad', ylab='Pulso',main = "Edad vs. Pulso cardíaco")
-abline(regresion2)
+abline(regresion2, col="red")
 
 #Correlación entre Enfermedad y HR
 regresion3 <- lm(heart2$HeartDisease ~ heart2$MaxHR, data = heart2)
 summary(regresion3)
 plot(heart2$HeartDisease, heart2$MaxHR, xlab='Heart Disease', ylab='Pulso', main = "ECV vs. Pulso cardíaco")
 
-
 #Correlación entre Colesterol y Presión
 regresion4 <- lm(heart2$RestingBP ~ heart2$Cholesterol, data = heart2)
 summary(regresion4)
 plot(heart2$Cholesterol, heart2$RestingBP, xlab='Colesterol', ylab='Presión', main = "Colesterol vs. Presión")
-abline(regresion4)
+abline(regresion4, col="red")
 
 #Tabla de frecuencias por edades
 TablaFrec <- freq(heart2$Age)
 TablaFrec
 print(xtable(TablaFrec, caption = "Pregunta 11"), type = "html",
       file = "tabla_p11.html")
+
+#Mediana de edad
+median(heart$Age)
 
 #Grupos de edad
 heart2$Edadrango=ifelse(heart2$Age < 55, "Menor a 55", "Igual o mayor a 55")
@@ -158,8 +154,6 @@ Frecee
 #Tabla de frecuencias por grupo de edad
 TablaFrecrango <- freq(heart2$Edadrango)
 TablaFrecrango
-
-
 
 #Tabla de frecuencia por Sexo
 TablaFrec1 <- freq(heart2$Sex)
@@ -172,7 +166,6 @@ Frec=table(heart2$Sex, heart2$HeartDisease)
 Frec
 Frecp=round( prop.table(table(heart2$Sex, heart2$HeartDisease))*100, 2)
 Frecp
-
 
 #Test de hipótesis
 x1=filter(heart2, heart2$HeartDisease==1)
@@ -191,5 +184,3 @@ xb=rnorm(x2,mediax2)
 test <- t.test(xa,xb) # Prueba t-Student
 
 print(test)
-
-median(heart$Age)
